@@ -10,16 +10,28 @@ Script en python para ordenar archivos en en distintas carpetas según su extens
 
 ## Tipos de archivos contemplados
 - Imágenes
-.png
-.jpg
+-.png
+-.jpg
+-.jpeg
+-.webp
 - Documentos word
-.docx
-.doc
-.odt
+-.docx
+-.doc
+-.odt
 - Documentos txt
-.txt
+-.txt
 - Hojas de cálculo
 .xlsx
 .ods
 - PDF
-.pdf
+-.pdf
+- KML
+- Video
+-.mp4
+-.mkv
+- Comprimidos
+-.zip
+-.rar
+-.7z
+
+Adicionalmente los archivos no contemplados se guardan en una carpeta común llamada "Otros"
