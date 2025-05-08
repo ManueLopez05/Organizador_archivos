@@ -24,8 +24,17 @@ file_extentions = {
     ".txt":"Documentos_txt",
     ".png":"Imagenes",
     ".jpg":"Imagenes",
+    ".jpeg": "Imagenes",
+    ".webp": "Imagenes",
     ".xlsx":"Excel",
     ".ods":"Excel",
+    ".mp4":"Videos",
+    ".avi":"Videos",
+    ".mkv":"Videos",
+    ".zip":"Comprimidos",
+    ".rar":"Comprimidos",
+    ".7z": "Comprimidos",
+    ".kml": "Archivos_kml",
     "otros": "Otros"  #Para todos los archivos no contemplados
 }
 
