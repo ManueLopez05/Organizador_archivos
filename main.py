@@ -26,7 +26,7 @@ file_extentions = {
     ".rar":"Comprimidos",
     ".7z": "Comprimidos",
     ".kml": "Archivos_kml",
-    "otros": "Otros"  #Para todos los archivos no contemplados
+    "Otros": "Otros"  #Para todos los archivos no contemplados
 }
 
 #--------------------------------------------Funciones para los botónes----------------------------------------------
@@ -38,6 +38,9 @@ def get_path():
 
 
 def move_files():
+    if not path:
+        messagebox.showwarning("Advertencia","Primero seleccione una carpeta")
+        return
     try:
         for folder_name in set(check_if_files_exists()):
             folder_path = os.path.join(path,folder_name)
@@ -53,15 +56,15 @@ def move_files():
                 if file_ext in file_extentions:
                     shutil.move(file_path, os.path.join(path,file_extentions[file_ext],file))
                 else:
-                    shutil.move(file_path,os.path.join(path,file_extentions["otros"],file))
+                    shutil.move(file_path,os.path.join(path,file_extentions["Otros"],file))
         
-        messagebox.showinfo("Info", "Se organizaron los archivos")
-    except:
-        messagebox.showinfo("Advertencia","La ruta es incorrecta")
+        messagebox.showinfo("Mensaje", "Se organizaron los archivos")
+    except Exception as e:
+        messagebox.showerror("Error",f"Error:\n{str(e)}")
 
 #Se crean las carpetas únicamente para los archivos que se encuentran en el directorio
 def check_if_files_exists():
-    folders = ["Otros"]
+    folders = list()
     for file in os.listdir(path):
         file_path = os.path.join(path,file)
 
@@ -71,14 +74,16 @@ def check_if_files_exists():
             #print(file_ext)
 
             if file_ext in file_extentions and not file_extentions[file_ext] in folders:
-                folders.append(file_extentions[file_ext])    
+                folders.append(file_extentions[file_ext])
+            elif not file_ext in file_extentions and not file_extentions["Otros"] in folders:
+                folders.append("Otros")
     #print(folders)
     return folders
 #-----------------------------------------------Aplicación Gráfica-----------------------------------------------------
 #Iniciamos las Tkinter y configuramos la ventana principal
 root = Tk()
 root.title("Organizador de Archivos")
-root.minsize(width=500, height=300)
+root.minsize(width=400, height=200)
 root.grid_anchor("center")
 
 #Body---------------------------------------------
@@ -87,7 +92,7 @@ root.grid_anchor("center")
 path_label = Label(root, text="Ruta:", font=(14))
 path_label.grid(row=0, column=1,padx=10,pady=10)
 
-path_entry = Label(root, text="...........",font=(8))
+path_entry = Label(root, text="...........",font=(6))
 path_entry.grid(row=1,column=1,padx=10,pady=10)
 
 path_button = Button(root, text="...", command=get_path)
