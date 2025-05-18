@@ -4,7 +4,6 @@ from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
 
-
 #Almacenamos los nombres de las carpetas en una diccionario
 path = None
 file_extentions = {
@@ -19,6 +18,7 @@ file_extentions = {
     ".webp": "Imagenes",
     ".xlsx":"Excel",
     ".ods":"Excel",
+    ".csv":"Archivos_csv",
     ".mp4":"Videos",
     ".avi":"Videos",
     ".mkv":"Videos",
@@ -30,7 +30,7 @@ file_extentions = {
 }
 
 #--------------------------------------------Funciones para los botónes----------------------------------------------
-#Obtener ruta de carpeta
+
 def get_path():
     global path
     path = filedialog.askdirectory(title="Selecciona la ruta de la carpeta")
@@ -38,41 +38,63 @@ def get_path():
 
 
 def move_files():
-    for folder_name in set(file_extentions.values()):
-        folder_path = os.path.join(path,folder_name)
-        if not os.path.exists(folder_path):os.makedirs(folder_path)
+    try:
+        for folder_name in set(check_if_files_exists()):
+            folder_path = os.path.join(path,folder_name)
+            if not os.path.exists(folder_path):os.makedirs(folder_path)
 
+        for file in os.listdir(path):
+            file_path = os.path.join(path,file)
+
+            if os.path.isfile(file_path):
+                name, file_ext = os.path.splitext(file)
+                file_ext = file_ext.lower()
+
+                if file_ext in file_extentions:
+                    shutil.move(file_path, os.path.join(path,file_extentions[file_ext],file))
+                else:
+                    shutil.move(file_path,os.path.join(path,file_extentions["otros"],file))
+        
+        messagebox.showinfo("Info", "Se organizaron los archivos")
+    except:
+        messagebox.showinfo("Advertencia","La ruta es incorrecta")
+
+#Se crean las carpetas únicamente para los archivos que se encuentran en el directorio
+def check_if_files_exists():
+    folders = ["Otros"]
     for file in os.listdir(path):
         file_path = os.path.join(path,file)
+
         if os.path.isfile(file_path):
             name, file_ext = os.path.splitext(file)
             file_ext = file_ext.lower()
-            if file_ext in file_extentions:
-                shutil.move(file_path, os.path.join(path,file_extentions[file_ext],file))
-            else:
-                shutil.move(file_path,os.path.join(path,file_extentions["otros"],file))
-    
-    messagebox.showinfo("Info", "Se organizaron los archivos")
+            #print(file_ext)
 
-
+            if file_ext in file_extentions and not file_extentions[file_ext] in folders:
+                folders.append(file_extentions[file_ext])    
+    #print(folders)
+    return folders
 #-----------------------------------------------Aplicación Gráfica-----------------------------------------------------
 #Iniciamos las Tkinter y configuramos la ventana principal
 root = Tk()
 root.title("Organizador de Archivos")
-root.resizable(0,0)
-#Body
-#Para seleccionar la ruta
-path_label = Label(root, text="Ruta:")
-path_label.grid(row=1, column=0,padx=10,pady=25)
+root.minsize(width=500, height=300)
+root.grid_anchor("center")
 
-path_entry = Label(root, text="...........")
-path_entry.grid(row=1,column=1,padx=10,pady=25)
+#Body---------------------------------------------
+
+#Para seleccionar la ruta
+path_label = Label(root, text="Ruta:", font=(14))
+path_label.grid(row=0, column=1,padx=10,pady=10)
+
+path_entry = Label(root, text="...........",font=(8))
+path_entry.grid(row=1,column=1,padx=10,pady=10)
 
 path_button = Button(root, text="...", command=get_path)
-path_button.grid(row=1,column=2,padx=10,pady=25)
+path_button.grid(row=2,column=1,padx=10,pady=10)
 
 #Botón que organiza los archivos
 organization_button = Button(root, text="Organizar",command=move_files)
-organization_button.grid(row=2,column=1,padx=10,pady=25)
+organization_button.grid(row=3,column=1,padx=10,pady=25)
 
 root.mainloop()

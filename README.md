@@ -1,37 +1,56 @@
-# Organizador de Archivos
+# 📂 Organizador de Archivos
 
-Script en python para ordenar archivos en en distintas carpetas según su extensión
+Script en Python que ordena automáticamente archivos en distintas carpetas según su extensión.
 
-## Funcionamiento
+---
+## Tecnologías usadas
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+---
 
-- Al ejecutarse se lanza una ventana para seleccionar la ruta de la carpeta en que se encuentran los archivos que se quieren ordenar.
+## 🚀 Funcionamiento
 
-- Se crean las carpetas para cada tipo de archivo según su extensión y posteriormente se mueven los mismos a la carpeta correspondiente
+1. Al ejecutarse, se abre una ventana donde puedes seleccionar la carpeta que contiene los archivos a ordenar.
+2. El script crea carpetas por tipo de archivo (según su extensión).
+3. Luego, mueve cada archivo a su carpeta correspondiente.
 
-## Tipos de archivos contemplados
-- Imágenes
--.png
--.jpg
--.jpeg
--.webp
-- Documentos word
--.docx
--.doc
--.odt
-- Documentos txt
--.txt
-- Hojas de cálculo
-.xlsx
-.ods
-- PDF
--.pdf
-- KML
-- Video
--.mp4
--.mkv
-- Comprimidos
--.zip
--.rar
--.7z
+## 📁 Tipos de archivos contemplados
 
-Adicionalmente los archivos no contemplados se guardan en una carpeta común llamada "Otros"
+### 🖼️ Imágenes
+- `.png`
+- `.jpg`
+- `.jpeg`
+- `.webp`
+
+### 📄 Documentos Word
+- `.docx`
+- `.doc`
+- `.odt`
+
+### 📑 Archivos de texto
+- `.txt`
+
+### 📊 Hojas de cálculo
+- `.xlsx`
+- `.ods`
+
+### 📕 PDF
+- `.pdf`
+
+### 🗺️ KML
+- `.kml`
+
+### 📋 CSV
+- `.csv`
+
+### 🎬 Videos
+- `.mp4`
+- `.mkv`
+
+### 📦 Comprimidos
+- `.zip`
+- `.rar`
+- `.7z`
+
+### 🗃️ Otros
+Los archivos con extensiones no contempladas se moverán a una carpeta llamada **`Otros`**.
+
