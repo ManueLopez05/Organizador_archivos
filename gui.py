@@ -1,5 +1,5 @@
-from tkinter import *
-from tkinter import filedialog, messagebox
+import tkinter as tk
+from tkinter import ttk, filedialog, messagebox
 from file_organizer import move_files_2_folders
 
 
@@ -22,6 +22,8 @@ class App:
         self.root.title("Organizador de Archivos")
         self.root.minsize(width=400, height=200)
         self.root.grid_anchor("center")
+        self.style = ttk.Style()
+        self.style.theme_use("clam")
         self._create_widgets()
     
     def _create_widgets(self):
@@ -31,18 +33,18 @@ class App:
 
         """
 
-        self.path_label = Label(self.root, text="Ruta:", font=(14))
+        self.path_label = ttk.Label(self.root, text="Ruta:", font=(14))
         self.path_label.grid(row=0, column=1,padx=10,pady=10)
 
-        self.path_entry = Label(self.root, text="...........",font=(6))
+        self.path_entry = ttk.Label(self.root, text="...........",font=(6))
         self.path_entry.grid(row=1,column=1,padx=10,pady=10)
 
         #Boton para obetener el path mediante la función get_path()
-        self.get_path_button = Button(self.root, text="...", command=self._get_path)
+        self.get_path_button = ttk.Button(self.root, text="...", command=self._get_path)
         self.get_path_button.grid(row=2,column=1,padx=10,pady=10)
 
         #Boton para organizar los archivos mediante la función move_files()
-        organizer_button = Button(self.root, text="Organizar",command=self._move_files)
+        organizer_button = ttk.Button(self.root, text="Organizar",command=self._move_files)
         organizer_button.grid(row=3,column=1,padx=10,pady=25)
 
     def _get_path(self):
@@ -101,7 +103,7 @@ def run_app(file_extentions_dictionary):
         file_extentions_dictionary {diccionario} -- Contiene extenciones de archivos (key) asociados a un tipo de archivo/carpeta (value).
 
     """
-    root = Tk()
+    root = tk.Tk()
     app = App(root,file_extentions_dictionary)
     #print(type(root))
     root.mainloop()
