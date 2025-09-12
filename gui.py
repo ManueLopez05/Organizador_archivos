@@ -66,11 +66,11 @@ class App:
         
         Raises:
             AttributeError  
-                Esto ocurre cuando se intenta ejecutar este atributo sin antes haber ejecutado el atributo _geth_path(),
-                pue es en ahí dónde se define el atributo self.path, por lo que de no hacerlo esté no existirá en el programa. 
+                Esto ocurre cuando se intenta ejecutar este atributo sin antes haber ejecutado el método _geth_path(),
+                pue es en ahí dónde se define el atributo self.path, por lo que de no hacerlo este no existirá en el programa. 
 
             FileNotFoundError
-                Ocurre cuando se intenta manipular un archivo que no se encuentra, es provocado si al obtener el apth se pasa una ruta que no existe 
+                Ocurre cuando se intenta manipular un archivo que no se encuentra, es provocado si al obtener al definir self.path se pasa una ruta que no existe 
                 o ninguna ruta (str vacío).
             
             TypeError
@@ -79,14 +79,14 @@ class App:
 
         
         Notes:
-            Todas las excepciones ocurren dentro de la función move_files_2_folders(), que a su vez se propagan en la funciones auxiliares
-            de las que esta hace uso (Revisar el módulo file_organizer). ¿Sería mejor tratar la excepciones directamente en esas funciones?
+            Todas las excepciones ocurren dentro de la función move_files_2_folders(), que a su vez provienen de la funciones auxiliares
+            de las que esta hace uso (Revisar el módulo file_organizer). ¿Sería mejor tratar la excepciones directamente en esas funciones? No se, debo investigarlo
 
         """
         try:
             move_files_2_folders(self.path,self.file_extentions_dictionary)
         except AttributeError:
-            messagebox.showwarning("Advertencia", "Primero seleccine un directorio")
+            messagebox.showwarning("Advertencia", "Primero seleccione un directorio")
         except FileNotFoundError:
             messagebox.showwarning("Advertencia", "Seleccione un directorio válido")
         except TypeError:
@@ -95,7 +95,7 @@ class App:
 
 def run_app(file_extentions_dictionary):
     """
-    Ejecuta la interfáz gráfica usando Tkinter.
+    Ejecuta la interfaz gráfica usando Tkinter.
 
     Arguments:
         file_extentions_dictionary {diccionario} -- Contiene extenciones de archivos (key) asociados a un tipo de archivo/carpeta (value).
@@ -103,5 +103,5 @@ def run_app(file_extentions_dictionary):
     """
     root = Tk()
     app = App(root,file_extentions_dictionary)
-    print(type(root))
+    #print(type(root))
     root.mainloop()

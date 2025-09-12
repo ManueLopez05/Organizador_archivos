@@ -7,7 +7,7 @@ def move_files_2_folders(path,file_extentions_dictionary):
     Mueve todos los archivos a sus carpetas correspondientes.
 
     Arguments:
-        path {str} -- Contiene el path del directorio dónde se encuentran los archivos a ordenar.
+        path {str} -- Contiene la ruta del directorio dónde se encuentran los archivos a ordenar.
 
         file_extention_dictionary {dict} -- contiene extenciones de archivos (key) asociados a un tipo de archivo/carpeta (value).
 
@@ -15,9 +15,9 @@ def move_files_2_folders(path,file_extentions_dictionary):
 
     
     See Also:
-        _check_files_in_folderpath() [En este módulo] -- Revisa que tipos de archivos existen en el directorio
+        _check_files_in_folderpath() [En este módulo] -- Revisa que tipos de archivos existen en el directorio.
 
-        _create_folders() [En este módulo] -- Crea las carpetas a dónde se moverán los archivos
+        _create_folders() [En este módulo] -- Crea las carpetas a dónde se moverán los archivos.
     
         
     """
@@ -55,7 +55,7 @@ def _check_files_in_folderpath(path, file_extentions_dictionary):
 
     Arguments:
 
-        path {str} -- Contiene el path del directorio dónde se encuentran los archivos a ordenar.
+        path {str} -- Contiene la ruta del directorio dónde se encuentran los archivos a ordenar.
 
         file_extention_dictionary {dict} -- Contiene extenciones de archivos (key) asociados a un tipo de archivo/carpeta (value).
     
@@ -103,7 +103,7 @@ def _create_folders(path, folders_set):
 
     Arguments:
 
-        path {str} -- Contiene el path del directorio dónde se encuentran los archivos a ordenar.
+        path {str} -- Contiene la ruta del directorio dónde se encuentran los archivos a ordenar.
 
         folders_set {set} -- Contiene los nombres de las carpetas a crear.
 

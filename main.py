@@ -23,6 +23,6 @@ file_extentions = {
     ".kml": "Archivos_kml",
     "Otros": "Otros"  #Para todos los archivos no contemplados
 }
-print(type(file_extentions))
+#print(type(file_extentions))
 if __name__ == "__main__":
     gui.run_app(file_extentions)
