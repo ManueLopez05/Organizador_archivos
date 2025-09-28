@@ -36,7 +36,8 @@ class App:
         self.path_label = ttk.Label(self.root, text="Ruta:", font=(14))
         self.path_label.grid(row=0, column=1,padx=10,pady=10)
 
-        self.path_entry = ttk.Label(self.root, text="...........",font=(6))
+        # Entry del cuál se obtendrá la ruta de la carpeta
+        self.path_entry = ttk.Entry(self.root, width=30,font=(6))
         self.path_entry.grid(row=1,column=1,padx=10,pady=10)
 
         #Boton para obetener el path mediante la función get_path()
@@ -53,12 +54,20 @@ class App:
         Mediante filedialog obtiene la ruta del directorio que contiene los archivos para ordenar y la guarda en el atributo self.path,
         en caso de no hacer una selección de directorio muestra una advertencia en pantalla.
 
+        Notes:
+
+            self.path almacena la ruta obtenida pero lo que realmente se usa para hacer el ordenamiento es el contenido de self.path_entry, es por ello 
+            que se carga el contenido de self.path al Entry.
+
         """
         self.path = filedialog.askdirectory(title="Selecciona la ruta de la carpeta")
-        self.path_entry.configure(text=self.path)
+        #self.path_entry.configure(text=self.path)
 
         if not self.path:
             messagebox.showwarning("Advertencia", "No se seleccionó ningún directorio.")
+        else:
+            self.path_entry.delete(0, tk.END)
+            self.path_entry.insert(0,self.path)
     
 
     def _move_files(self):
@@ -69,10 +78,10 @@ class App:
         Raises:
             AttributeError  
                 Esto ocurre cuando se intenta ejecutar este atributo sin antes haber ejecutado el método _geth_path(),
-                pue es en ahí dónde se define el atributo self.path, por lo que de no hacerlo este no existirá en el programa. 
+                pue es ahí dónde se define el atributo self.path, por lo que de no hacerlo este no existirá en el programa. 
 
             FileNotFoundError
-                Ocurre cuando se intenta manipular un archivo que no se encuentra, es provocado si al obtener al definir self.path se pasa una ruta que no existe 
+                Ocurre cuando se intenta manipular un archivo que no se encuentra, es provocado si al definir self.path se pasa una ruta que no existe 
                 o ninguna ruta (str vacío).
             
             TypeError
@@ -84,9 +93,11 @@ class App:
             Todas las excepciones ocurren dentro de la función move_files_2_folders(), que a su vez provienen de la funciones auxiliares
             de las que esta hace uso (Revisar el módulo file_organizer). ¿Sería mejor tratar la excepciones directamente en esas funciones? No se, debo investigarlo
 
+
+
         """
         try:
-            move_files_2_folders(self.path,self.file_extentions_dictionary)
+            move_files_2_folders(self.path_entry.get().strip(),self.file_extentions_dictionary)
         except AttributeError:
             messagebox.showwarning("Advertencia", "Primero seleccione un directorio")
         except FileNotFoundError:
