@@ -62,12 +62,8 @@ class App:
         """
         self.path = filedialog.askdirectory(title="Selecciona la ruta de la carpeta")
         #self.path_entry.configure(text=self.path)
-
-        if not self.path:
-            messagebox.showwarning("Advertencia", "No se seleccionó ningún directorio.")
-        else:
-            self.path_entry.delete(0, tk.END)
-            self.path_entry.insert(0,self.path)
+        self.path_entry.delete(0, tk.END)
+        self.path_entry.insert(0,self.path)
     
 
     def _move_files(self):
@@ -75,35 +71,26 @@ class App:
         Ejecuta la función move_file_2_folders() del módulo file_organizer. Con esto se seleccionan que carpetas crear,
         se crean las carpetas y se mueven los archivos a la que le corresponde.
         
-        Raises:
-            AttributeError  
-                Esto ocurre cuando se intenta ejecutar este atributo sin antes haber ejecutado el método _geth_path(),
-                pue es ahí dónde se define el atributo self.path, por lo que de no hacerlo este no existirá en el programa. 
+        Raises: 
 
             FileNotFoundError
-                Ocurre cuando se intenta manipular un archivo que no se encuentra, es provocado si al definir self.path se pasa una ruta que no existe 
-                o ninguna ruta (str vacío).
-            
-            TypeError
-                Cuando se ejecuta el método _get_path() y lo primero que se hace es cancelar, en vez de obtener un string la instrucción
-                filedialog.askdirectory() devuelve una tupla. (Nota. No estoy seguro de por qué, tengo que investigar esto)
+                Ocurre cuando se intenta manipular un archivo que no se encuentra, es provocado si la ruta que se obtiene con
+                self.path_entry.get().strip() no existe.
 
-        
         Notes:
             Todas las excepciones ocurren dentro de la función move_files_2_folders(), que a su vez provienen de la funciones auxiliares
             de las que esta hace uso (Revisar el módulo file_organizer). ¿Sería mejor tratar la excepciones directamente en esas funciones? No se, debo investigarlo
 
 
-
         """
-        try:
-            move_files_2_folders(self.path_entry.get().strip(),self.file_extentions_dictionary)
-        except AttributeError:
-            messagebox.showwarning("Advertencia", "Primero seleccione un directorio")
-        except FileNotFoundError:
-            messagebox.showwarning("Advertencia", "Seleccione un directorio válido")
-        except TypeError:
-            messagebox.showwarning("Advertencia", "Seleccione un directorio válido")
+
+        if self.path_entry.get().strip():
+            try:
+                move_files_2_folders(self.path_entry.get().strip(),self.file_extentions_dictionary)
+            except FileNotFoundError:
+                messagebox.showwarning("Advertencia", "El directorio seleccionado no existe.")
+        else:
+            messagebox.showwarning("Advertencia", "No se seleccionó ningún directorio.")
 
 
 def run_app(file_extentions_dictionary):
@@ -111,7 +98,7 @@ def run_app(file_extentions_dictionary):
     Ejecuta la interfaz gráfica usando Tkinter.
 
     Arguments:
-        file_extentions_dictionary {diccionario} -- Contiene extenciones de archivos (key) asociados a un tipo de archivo/carpeta (value).
+        file_extentions_dictionary {dict} -- Contiene extenciones de archivos (key) asociados a un tipo de archivo/carpeta (value).
 
     """
     root = tk.Tk()

@@ -1,5 +1,6 @@
 import os
 import shutil
+from datetime import time
 
 def move_files_2_folders(path,file_extentions_dictionary):
 
@@ -18,32 +19,27 @@ def move_files_2_folders(path,file_extentions_dictionary):
         _check_files_in_folderpath() [En este módulo] -- Revisa que tipos de archivos existen en el directorio.
 
         _create_folders() [En este módulo] -- Crea las carpetas a dónde se moverán los archivos.
-    
+
+        _browse_files() [En este módulo] -- Genera una lista con los archivos en el directorio.
         
     """
     #Se genera el set de nombres de carpetas
     folders_set = _check_files_in_folderpath(path, file_extentions_dictionary)
     #Se crean las carpetas con el set obtenido
     _create_folders(path, folders_set)
+    #Se genera las listas de, rutas, extenciones y nombres de los archivos en el directorio
+    file_path_list, file_list, file_extensions_list = _browse_files(path)
 
-    for item in os.listdir(path):
+    for file_extension, item_path, item in zip(file_extensions_list,file_path_list,file_list):
+        #Se comprueba si está dentro del diccionario para moverse a la carpeta que corresponde
+        if file_extension in file_extentions_dictionary:
+            shutil.move(item_path, os.path.join(path,file_extentions_dictionary[file_extension],item))
+            print(f"\nSe movió el archivo {item_path} a {os.path.join(path,file_extentions_dictionary[file_extension],item)}")
 
-        item_path = os.path.join(path,item)
-
-        if os.path.isfile(item_path):
-            #Se obtiene la extención del archivo
-            name, file_extention = os.path.splitext(item)
-            file_extention = file_extention.lower()
-
-            #Se comprueba si está dentro del diccionario para moverse a la carpeta que corresponde
-            if file_extention in file_extentions_dictionary:
-                shutil.move(item_path, os.path.join(path,file_extentions_dictionary[file_extention],item))
-
-            #Si no se encuentra en el diccionario, se mueve a la carpeta otros
-            else:
-                shutil.move(item_path,os.path.join(path,file_extentions_dictionary["Otros"],item))
-
-
+        #Si no se encuentra en el diccionario, se mueve a la carpeta otros
+        else:
+            shutil.move(item_path,os.path.join(path,file_extentions_dictionary["Otros"],item))
+            print(f"\nSe movió el archivo {item_path} a {os.path.join(path,file_extentions_dictionary['Otros'],item)}")
 
 
 def _check_files_in_folderpath(path, file_extentions_dictionary):
@@ -70,26 +66,26 @@ def _check_files_in_folderpath(path, file_extentions_dictionary):
         de carpeta mas de una vez, sin embargo, un conjunto (set) elimina de manera automatica los valores repetidos
         dentro de el. Se dejaron como comentarios en caso de ser necesarias.
 
+    See Also:
+        _browse_files() [En este módulo] -- Genera una lista con los archivos en el directorio.
     """
     
     folders_set = set()
 
-    for item in os.listdir(path):
-        item_path = os.path.join(path,item)
+    file_path_list, file_list, file_extensions_list = _browse_files(path)
 
-        if os.path.isfile(item_path):
-            #Se obtiene la extención del archivo
-            name, file_extention = os.path.splitext(item)
-            file_extention = file_extention.lower()
-            
+    for file_extension in file_extensions_list: 
             #Comprobamos si la extención de archivo se encuentra en el diccionario
-            if file_extention in file_extentions_dictionary: #and not file_extentions_dictionary[file_extention] in folders_set:
+            if file_extension in file_extentions_dictionary: #and not file_extentions_dictionary[file_extention] in folders_set:
                 #Se añade el nombre de la carpeta al set si existe el tipo de archivo correspondiente
-                folders_set.add(file_extentions_dictionary[file_extention])
+                folders_set.add(file_extentions_dictionary[file_extension])
 
             #Se añade el nombre de la carpeta Otros si se encuentran extenciones no contempladas en el diccionario
-            elif not file_extention in file_extentions_dictionary: #and not file_extentions_dictionary["Otros"] in folders_set:
+            elif not file_extension in file_extentions_dictionary: #and not file_extentions_dictionary["Otros"] in folders_set:
                 folders_set.add("Otros")
+    #------------------------------------------Para depuración----------------------------------------------------------
+    print("------------------------------------En función _check_files_in_folderpath()------------------------")
+    print(f"Tamaño de set de carpetas: {len(folders_set)}")
 
     return folders_set
 
@@ -118,3 +114,43 @@ def _create_folders(path, folders_set):
         #Se crea la carpeta solo si esta no existe
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
+
+def _browse_files(path):
+    """
+    Hace una lista de todos los archivos que encuentra en el directorio.
+
+    Arguments:
+        path {str} -- Contiene la ruta del directorio dónde se encuentran los archivos a ordenar.
+
+    Returns:
+        {list} -- Contiene el nombre de todos lo archivos encontrados en el directorio.
+        {list} -- Contiene las extenciones de archivo de los items encontrados en el directorio.
+        {list} -- Contiene los nombres de archivo de los items encontrados en el directorio.
+    Raises:
+    
+    """
+    file_path_list = []
+    file_extensions_list = []
+    file_list = []
+
+
+    for item in os.listdir(path):
+        item_path = os.path.join(path,item)
+
+        if os.path.isfile(item_path):
+            file_list.append(item)
+            file_path_list.append(item_path)
+            
+
+            name, file_extension = os.path.splitext(item_path)
+            file_extension = file_extension.lower()
+            file_extensions_list.append(file_extension)
+
+            print("\n",item_path)
+            print("\n",item)
+            print("\n",file_extension)
+
+    # Para depuración
+    print("----------------------En función _browse_files()----------------------------------")
+    print(f"Tamaño de lista ruta de archivos: {len(file_path_list)}\nTamaño de lista nombres: {len(file_list)}\nTamaño de lista extenciones: {len(file_extensions_list)}")
+    return file_path_list, file_list, file_extensions_list
