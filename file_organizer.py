@@ -1,6 +1,6 @@
 import os
 import shutil
-from datetime import time
+from datetime import datetime
 
 
 
@@ -159,3 +159,43 @@ def _browse_files(path):
     print("----------------------En función _browse_files()----------------------------------")
     print(f"Tamaño de lista ruta de archivos: {len(file_path_list)}\nTamaño de lista nombres: {len(file_list)}\nTamaño de lista extenciones: {len(file_extensions_list)}")
     return file_path_list, file_list, file_extensions_list
+
+
+
+def organize_files_by_date(path):
+    """
+    Función que organiza los archivos según su fecha de modificación.
+
+    Arguments:
+        path {str} -- Contiene la ruta del directorio dónde se encuentran los archivos a ordenar.
+
+    """
+
+    file_path_list, file_list, file_extensions_list = _browse_files(path)
+
+    for file_path in file_path_list:
+        # Se obtien la fecha de modificación
+        modified_time = os.path.getmtime(file_path)
+
+        # Convertimos modified_time a un tipo de dato datatime
+        date = datetime.fromtimestamp(modified_time)
+
+        month = date.strftime("%B")
+        day = date.day
+
+        # Se crea el nombre del directorio con el mes y día
+        directory = os.path.join(path, f"{month} - {day}")
+
+        # Se crcrea el nombre del directorio con mes y subcarpetas con día
+        #directory = os.path.join(path, f"{month}/{day}")
+
+        # Se crea el directorio
+
+        os.makedirs(directory,exist_ok=True)
+
+        # Se mueve el archivo
+        shutil.move(file_path, directory)
+
+        # Para depuración
+        print("-------------------------------------En función organize_files_by_date()----------------------------------")
+        print(f"Se movió '{file_path}' a '{directory}'")
