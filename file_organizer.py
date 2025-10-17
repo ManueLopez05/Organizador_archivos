@@ -173,6 +173,8 @@ def organize_files_by_date(path):
 
     file_path_list, file_list, file_extensions_list = _browse_files(path)
 
+    months_years = _check_date(file_path_list)
+
     for file_path in file_path_list:
         # Se obtien la fecha de modificación
         modified_time = os.path.getmtime(file_path)
@@ -184,7 +186,13 @@ def organize_files_by_date(path):
         day = date.day
 
         # Se crea el nombre del directorio con el mes y día
-        directory = os.path.join(path, f"{month} - {day}")
+        if months_years == "varios meses y anios":
+            year = date.year
+            directory = os.path.join(path, f"{year}/{month}/{day}")
+        elif months_years == "varios meses":
+            directory = os.path.join(path,f"{month}/{day}")
+        elif months_years == "basico":
+            directory = os.path.join(path,f"{month} - {day}")
 
         # Se crcrea el nombre del directorio con mes y subcarpetas con día
         #directory = os.path.join(path, f"{month}/{day}")
@@ -199,3 +207,38 @@ def organize_files_by_date(path):
         # Para depuración
         print("-------------------------------------En función organize_files_by_date()----------------------------------")
         print(f"Se movió '{file_path}' a '{directory}'")
+
+def _check_date(file_path_list):
+    """
+    Revisa las fechas de todos los archivos para saber si solo abercan un mes, varios meses o varios años.
+
+    Arguments:
+        file_path_list {list} -- Una lista con las rutas de todos los archivos en el directorio.
+
+    Return:
+        {str} -- Regresa un string que indica si hay o no varios años y varios meses.
+    """
+
+    years = set()
+    months = set()
+
+    for file_path in file_path_list:
+
+        # Se obtien la fecha de modificación
+        modified_time = os.path.getmtime(file_path)
+
+        # Convertimos modified_time a un tipo de dato datatime
+        date = datetime.fromtimestamp(modified_time)
+
+        month = date.strftime("%B")
+        year = date.year
+
+        years.add(year)
+        months.add(month)
+    
+    if len(months) > 3:
+        if len(years > 1):
+            return "varios meses y anios"
+        return "varios meses"
+    else:
+        return "basico"
