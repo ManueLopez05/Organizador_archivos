@@ -1,6 +1,6 @@
 # 📂 Organizador de Archivos
 
-Script en Python que ordena automáticamente archivos en distintas carpetas según su extensión.
+**Script en Python que ordena automáticamente archivos en distintas carpetas según su extensión y fecha de modificación.**
 
 ---
 ## Tecnologías usadas
@@ -8,10 +8,12 @@ Script en Python que ordena automáticamente archivos en distintas carpetas seg�
 ---
 
 ## 🚀 Funcionamiento
+Se crean carpetas en función de los tipos de archivos existentes, y se mueven los mismos a la que le corresponde, los tipos de archivos que no están contemplados simplemente se mueven a una carpeta llamada Otros.
 
-1. Al ejecutarse, se abre una ventana donde puedes seleccionar la carpeta que contiene los archivos a ordenar.
-2. El script crea carpetas por tipo de archivo (según su extensión).
-3. Luego, mueve cada archivo a su carpeta correspondiente.
+### Organizar archivos por tipo 
+Se crean carpetas en función del día y el mes y se mueven los archivos  a cada carpeta según le corresponda.
+
+### Organizar archivos por fecha
 
 ## 📁 Tipos de archivos contemplados
 

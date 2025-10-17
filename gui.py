@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
-from file_organizer import organize_files_by_type
+from file_organizer import organize_files_by_type, organize_files_by_date
 
 
 class App: 
@@ -20,11 +20,14 @@ class App:
         self.file_extentions_dictionary = file_extentions_dictionary
         self.root = root
         self.root.title("Organizador de Archivos")
-        self.root.minsize(width=400, height=200)
+        self.root.minsize(width=400, height=300)
         self.root.grid_anchor("center")
         self.style = ttk.Style()
         self.style.theme_use("clam")
+        #Variable para control del tipo de ordenamiento
+        self.modo_ordenamiento = tk.StringVar(value="por_tipo")
         self._create_widgets()
+
     
     def _create_widgets(self):
         
@@ -32,6 +35,7 @@ class App:
         Crea los Labels y Botones en la interfaz gráfica
 
         """
+        
 
         self.path_label = ttk.Label(self.root, text="Ruta:", font=(14))
         self.path_label.grid(row=0, column=1,padx=10,pady=10)
@@ -44,9 +48,27 @@ class App:
         self.get_path_button = ttk.Button(self.root, text="...", command=self._get_path)
         self.get_path_button.grid(row=2,column=1,padx=10,pady=10)
 
+        # RadioButtons para selecccionar el tipo de ordenamiento
+        frame_radiobuttons = ttk.Frame(self.root)
+        frame_radiobuttons.grid(row=3,column=1,padx=10,pady=25)
+
+        ttk.Radiobutton(
+            frame_radiobuttons,
+            text="Organizar por tipo",
+            variable=self.modo_ordenamiento,
+            value="por_tipo"
+            ).pack(side="left",padx=10)
+        
+        ttk.Radiobutton(
+            frame_radiobuttons,
+            text="Organizar por fecha",
+            variable=self.modo_ordenamiento,
+            value="por_fecha"
+            ).pack(side="left",padx=10)
+        
         #Boton para organizar los archivos mediante la función move_files()
         organizer_button = ttk.Button(self.root, text="Organizar",command=self._move_files)
-        organizer_button.grid(row=3,column=1,padx=10,pady=25)
+        organizer_button.grid(row=4,column=1,padx=10,pady=25)
 
     def _get_path(self):
         """
@@ -86,7 +108,11 @@ class App:
 
         if self.path_entry.get().strip():
             try:
-                organize_files_by_type(self.path_entry.get().strip(),self.file_extentions_dictionary)
+                modo = self.modo_ordenamiento.get()
+                if modo == "por_tipo":
+                    organize_files_by_type(self.path_entry.get().strip(),self.file_extentions_dictionary)
+                elif modo == "por_fecha":
+                    organize_files_by_date(self.path_entry.get().strip())
             except FileNotFoundError:
                 messagebox.showwarning("Advertencia", "El directorio seleccionado no existe.")
         else:
