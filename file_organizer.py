@@ -188,9 +188,9 @@ def organize_files_by_date(path):
         # Se crea el nombre del directorio con el mes y día
         if months_years == "varios meses y anios":
             year = date.year
-            directory = os.path.join(path, f"{year}/{month}/{day}")
+            directory = os.path.join(path, f"{year}/{month}")
         elif months_years == "varios meses":
-            directory = os.path.join(path,f"{month}/{day}")
+            directory = os.path.join(path,f"{month}")
         elif months_years == "basico":
             directory = os.path.join(path,f"{month} - {day}")
 
@@ -237,7 +237,7 @@ def _check_date(file_path_list):
         months.add(month)
     
     if len(months) > 3:
-        if len(years > 1):
+        if len(years) > 1:
             return "varios meses y anios"
         return "varios meses"
     else:
