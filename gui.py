@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
-from file_organizer import move_files_2_folders
+from file_organizer import organize_files_by_type
 
 
 class App: 
@@ -86,7 +86,7 @@ class App:
 
         if self.path_entry.get().strip():
             try:
-                move_files_2_folders(self.path_entry.get().strip(),self.file_extentions_dictionary)
+                organize_files_by_type(self.path_entry.get().strip(),self.file_extentions_dictionary)
             except FileNotFoundError:
                 messagebox.showwarning("Advertencia", "El directorio seleccionado no existe.")
         else:

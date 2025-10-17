@@ -2,7 +2,9 @@ import os
 import shutil
 from datetime import time
 
-def move_files_2_folders(path,file_extentions_dictionary):
+
+
+def organize_files_by_type(path,file_extentions_dictionary):
 
     """
     Mueve todos los archivos a sus carpetas correspondientes.
@@ -40,6 +42,7 @@ def move_files_2_folders(path,file_extentions_dictionary):
         else:
             shutil.move(item_path,os.path.join(path,file_extentions_dictionary["Otros"],item))
             print(f"\nSe movió el archivo {item_path} a {os.path.join(path,file_extentions_dictionary['Otros'],item)}")
+
 
 
 def _check_files_in_folderpath(path, file_extentions_dictionary):
@@ -114,6 +117,8 @@ def _create_folders(path, folders_set):
         #Se crea la carpeta solo si esta no existe
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
+
+
 
 def _browse_files(path):
     """
