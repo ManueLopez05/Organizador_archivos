@@ -8,12 +8,13 @@
 ---
 
 ## 🚀 Funcionamiento
-Se crean carpetas en función de los tipos de archivos existentes, y se mueven los mismos a la que le corresponde, los tipos de archivos que no están contemplados simplemente se mueven a una carpeta llamada Otros.
+Una pequeña interfaz gráfica en la que puedes seleccionar la ruta de la carpeta dónde están los archivos que se quieren ordenar y escoger como quieres hacer la organización, si por tipo de archivo o su fecha de modificación.
 
 ### Organizar archivos por tipo 
-Se crean carpetas en función del día y el mes y se mueven los archivos  a cada carpeta según le corresponda.
+Se crean carpetas en función de los tipos de archivos existentes, y se mueven los mismos a la que le corresponde, los tipos de archivos que no están contemplados simplemente se mueven a una carpeta llamada “Otros”.
 
 ### Organizar archivos por fecha
+Se cren carpetas según los tipos de archivo existentes 
 
 ## 📁 Tipos de archivos contemplados
 
