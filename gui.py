@@ -19,12 +19,19 @@ class App:
         """
 
         self.file_extentions_dictionary = file_extentions_dictionary
+
+        #Configuración del root de la aplicación
         self.root = root
         self.root.title("Organizador de Archivos")
-        self.root.minsize(width=400, height=300)
-        self.root.grid_anchor("center")
+        self.root.minsize(width=400, height=350)
+        self.root.resizable(False,False)
+        #self.root.grid_anchor("center")
+
+
+        #Se defineel estilo de la aplicación
         self.style = ttk.Style()
         self.style.theme_use("clam")
+
         #Variable para control del tipo de ordenamiento
         self.modo_ordenamiento = tk.StringVar(value="por_tipo")
         #Se generan los widgets
@@ -41,13 +48,23 @@ class App:
         Crea los Labels y Botones en la interfaz gráfica
 
         """
-        
+        #Frame principal para toda la aplicación
+        frame_app = ttk.Frame(self.root)
+        frame_app.grid(row=0, column=0, sticky="nsew")
 
-        self.path_label = ttk.Label(self.root, text="Ruta:", font=(14))
-        self.path_label.grid(row=0, column=1,padx=10,pady=10)
+        self.root.grid_rowconfigure(0, weight=1)
+        self.root.grid_columnconfigure(0, weight=1)
+        
+        #Generamos dos columnas, a la izquierday a la derecha del contenido para centrarlo
+        frame_app.grid_columnconfigure(0, weight=1) # Columna izquierda vacía
+        frame_app.grid_columnconfigure(2, weight=1) # Columna derecha vacía
+
+        self.path_label = ttk.Label(frame_app, text="Ruta:", font=(14))
+        self.path_label.grid(row=1, column=1,padx=10,pady=10)
+
         #Frame para contener el entry y el botón para obtener la ruta
-        frame_entry = ttk.Frame(self.root)
-        frame_entry.grid(row=1,column=1,padx=10,pady=10)
+        frame_entry = ttk.Frame(frame_app)
+        frame_entry.grid(row=2,column=1,padx=10,pady=10)
 
         # Entry del cuál se obtendrá la ruta de la carpeta
         self.path_entry = ttk.Entry(frame_entry, width=30,font=(6))
@@ -59,8 +76,8 @@ class App:
         self.get_path_button.configure(width=2)
 
         # RadioButtons para selecccionar el tipo de ordenamiento
-        frame_radiobuttons = ttk.Frame(self.root)
-        frame_radiobuttons.grid(row=2,column=1,padx=10,pady=25)
+        frame_radiobuttons = ttk.Frame(frame_app)
+        frame_radiobuttons.grid(row=3,column=1,padx=10,pady=25)
 
         ttk.Radiobutton(
             frame_radiobuttons,
@@ -77,16 +94,16 @@ class App:
             ).pack(side="left",padx=10)
         
         #Boton para organizar los archivos mediante la función move_files()
-        organizer_button = ttk.Button(self.root, text="Organizar",command=self._move_files)
-        organizer_button.grid(row=3,column=1,padx=10,pady=10)
+        organizer_button = ttk.Button(frame_app, text="Organizar",command=self._move_files)
+        organizer_button.grid(row=4,column=1,padx=10,pady=10)
 
         #Botón para deshacer la acción
-        self.undo_button = ttk.Button(self.root, text="Deshacer", command=self._undo_action) 
-        self.undo_button.grid(row=4,column=1,padx=10,pady=10)
+        self.undo_button = ttk.Button(frame_app, text="Deshacer", command=self._undo_action) 
+        self.undo_button.grid(row=5,column=1,padx=10,pady=10)
 
         #Footer
-        frame_footer = ttk.Frame(self.root)
-        frame_footer.grid(row=5,column=1,padx=10,pady=15)
+        frame_footer = ttk.Frame(frame_app)
+        frame_footer.grid(row=6,column=1,padx=10,pady=15)
 
         #Label Nombre
         label_name = ttk.Label(frame_footer, text="Created by ManueLopez05 | GitHub", foreground="#666666", font=("Helvetica", 9), cursor="hand2")
