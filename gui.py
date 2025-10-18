@@ -83,7 +83,13 @@ class App:
         self.undo_button = ttk.Button(self.root, text="Deshacer", command=self._undo_action) 
         self.undo_button.grid(row=4,column=1,padx=10,pady=10)
 
-        
+        #Footer
+        frame_footer = ttk.Frame(self.root)
+        frame_footer.grid(row=5,column=1,padx=10,pady=15)
+
+        #Label Nombre
+        label_name = ttk.Label(frame_footer, text="Created by ManueLopez05 | Github", foreground="#666666", font=("Helvetica", 9))
+        label_name.pack()
     def _get_path(self):
         """
 
