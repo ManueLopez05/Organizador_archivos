@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 from file_organizer import organize_files_by_type, organize_files_by_date, undo_action
 import webbrowser
+import sys
+import os
 
 
 class App: 
@@ -25,6 +27,9 @@ class App:
         self.root.title("Organizador de Archivos")
         self.root.minsize(width=400, height=350)
         self.root.resizable(False,False)
+        #Configurar el icono de la aplicación
+        icon = tk.PhotoImage(file=self.resource_path("icon.png"))
+        self.root.iconphoto(True, icon)
         #self.root.grid_anchor("center")
 
 
@@ -170,11 +175,30 @@ class App:
 
 
     def _undo_action(self):
+        """
+        Ejecuta la función undo_action() para regresar los archivos a su directorio original solo sí antes de a ejecutado _move_files()
+        """
         if self.organized_files:
             undo_action(self.path, self.final_file_path_list, self.final_dir_path_set)
             self.organized_files = False
             #Para depuración 
             #print("Se desorganizaron los archivos")
+
+    
+    def _resource_path(self, relative_path):
+
+        """
+        Obtiene la ruta abssoluta de un archivo, en este caso del icono que se va a usar, compatible tanto con el entorno de desarrollo
+        como con la aplicación empaquetada mediante PyInstaller.
+
+        Arguments:
+            relative_path {str} -- Ruta relativa al archivo desde el directorio del script.
+        """
+        try:
+            base_path = sys._MEIPASS
+        except Exception:
+            base_path = os.path.abspath(".")
+        return os.path.join(base_path, relative_path)
 
 def run_app(file_extentions_dictionary):
     """
