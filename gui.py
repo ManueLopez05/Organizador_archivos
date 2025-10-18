@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
-from file_organizer import organize_files_by_type, organize_files_by_date
+from file_organizer import organize_files_by_type, organize_files_by_date, undo_action
 
 
 class App: 
@@ -26,7 +26,12 @@ class App:
         self.style.theme_use("clam")
         #Variable para control del tipo de ordenamiento
         self.modo_ordenamiento = tk.StringVar(value="por_tipo")
+        #Se generan los widgets
         self._create_widgets()
+        #Variable que contiene la ruta del directorio
+        self.path = ""
+        #Variable que indica que si los archivos ya se organizaron
+        self.organized_files = False
 
     
     def _create_widgets(self):
@@ -44,7 +49,7 @@ class App:
         self.path_entry = ttk.Entry(self.root, width=30,font=(6))
         self.path_entry.grid(row=1,column=1,padx=10,pady=10)
 
-        #Boton para obetener el path mediante la función get_path()
+        #Botón para obetener el path mediante la función get_path()
         self.get_path_button = ttk.Button(self.root, text="...", command=self._get_path)
         self.get_path_button.grid(row=2,column=1,padx=10,pady=10)
 
@@ -68,7 +73,12 @@ class App:
         
         #Boton para organizar los archivos mediante la función move_files()
         organizer_button = ttk.Button(self.root, text="Organizar",command=self._move_files)
-        organizer_button.grid(row=4,column=1,padx=10,pady=25)
+        organizer_button.grid(row=4,column=1,padx=10,pady=10)
+
+        #Botón para deshacer la acción
+        self.undo_button = ttk.Button(self.root, text="Deshacer", command=self._undo_action) 
+        self.undo_button.grid(row=5,column=1,padx=10,pady=10)
+
 
     def _get_path(self):
         """
@@ -82,10 +92,10 @@ class App:
             que se carga el contenido de self.path al Entry.
 
         """
-        self.path = filedialog.askdirectory(title="Selecciona la ruta de la carpeta")
+        temp_path = filedialog.askdirectory(title="Selecciona la ruta de la carpeta")
         #self.path_entry.configure(text=self.path)
         self.path_entry.delete(0, tk.END)
-        self.path_entry.insert(0,self.path)
+        self.path_entry.insert(0,temp_path)
     
 
     def _move_files(self):
@@ -105,19 +115,30 @@ class App:
 
 
         """
-
-        if self.path_entry.get().strip():
+        self.path = self.path_entry.get().strip()
+        if self.path:
             try:
                 modo = self.modo_ordenamiento.get()
                 if modo == "por_tipo":
-                    organize_files_by_type(self.path_entry.get().strip(),self.file_extentions_dictionary)
+                    self.final_file_path_list, self.final_dir_path_set = organize_files_by_type(self.path,self.file_extentions_dictionary)
+                    
                 elif modo == "por_fecha":
-                    organize_files_by_date(self.path_entry.get().strip())
+                    self.final_file_path_list, self.final_dir_path_set = organize_files_by_date(self.path)
             except FileNotFoundError:
                 messagebox.showwarning("Advertencia", "El directorio seleccionado no existe.")
+            else:
+                self.organized_files = True
         else:
             messagebox.showwarning("Advertencia", "No se seleccionó ningún directorio.")
+        
 
+
+    def _undo_action(self):
+        if self.organized_files:
+            undo_action(self.path, self.final_file_path_list, self.final_dir_path_set)
+            self.organized_files = False
+            #Para depuración 
+            print("Se desorganizaron los archivos")
 
 def run_app(file_extentions_dictionary):
     """
