@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 from file_organizer import organize_files_by_type, organize_files_by_date, undo_action
+import webbrowser
 
 
 class App: 
@@ -88,8 +89,16 @@ class App:
         frame_footer.grid(row=5,column=1,padx=10,pady=15)
 
         #Label Nombre
-        label_name = ttk.Label(frame_footer, text="Created by ManueLopez05 | Github", foreground="#666666", font=("Helvetica", 9))
+        label_name = ttk.Label(frame_footer, text="Created by ManueLopez05 | GitHub", foreground="#666666", font=("Helvetica", 9), cursor="hand2")
         label_name.pack()
+        label_name.bind("<Button-1>", lambda e: self._open_link())
+    
+
+
+    def _open_link(self):
+        webbrowser.open("https://github.com/ManueLopez05")
+
+
     def _get_path(self):
         """
 
@@ -148,7 +157,7 @@ class App:
             undo_action(self.path, self.final_file_path_list, self.final_dir_path_set)
             self.organized_files = False
             #Para depuración 
-            print("Se desorganizaron los archivos")
+            #print("Se desorganizaron los archivos")
 
 def run_app(file_extentions_dictionary):
     """
