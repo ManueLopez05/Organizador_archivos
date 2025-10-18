@@ -44,18 +44,22 @@ class App:
 
         self.path_label = ttk.Label(self.root, text="Ruta:", font=(14))
         self.path_label.grid(row=0, column=1,padx=10,pady=10)
+        #Frame para contener el entry y el botón para obtener la ruta
+        frame_entry = ttk.Frame(self.root)
+        frame_entry.grid(row=1,column=1,padx=10,pady=10)
 
         # Entry del cuál se obtendrá la ruta de la carpeta
-        self.path_entry = ttk.Entry(self.root, width=30,font=(6))
-        self.path_entry.grid(row=1,column=1,padx=10,pady=10)
+        self.path_entry = ttk.Entry(frame_entry, width=30,font=(6))
+        self.path_entry.pack(side="left")
 
         #Botón para obetener el path mediante la función get_path()
-        self.get_path_button = ttk.Button(self.root, text="...", command=self._get_path)
-        self.get_path_button.grid(row=2,column=1,padx=10,pady=10)
+        self.get_path_button = ttk.Button(frame_entry, text="...", command=self._get_path)
+        self.get_path_button.pack(side="left")
+        self.get_path_button.configure(width=2)
 
         # RadioButtons para selecccionar el tipo de ordenamiento
         frame_radiobuttons = ttk.Frame(self.root)
-        frame_radiobuttons.grid(row=3,column=1,padx=10,pady=25)
+        frame_radiobuttons.grid(row=2,column=1,padx=10,pady=25)
 
         ttk.Radiobutton(
             frame_radiobuttons,
@@ -73,13 +77,13 @@ class App:
         
         #Boton para organizar los archivos mediante la función move_files()
         organizer_button = ttk.Button(self.root, text="Organizar",command=self._move_files)
-        organizer_button.grid(row=4,column=1,padx=10,pady=10)
+        organizer_button.grid(row=3,column=1,padx=10,pady=10)
 
         #Botón para deshacer la acción
         self.undo_button = ttk.Button(self.root, text="Deshacer", command=self._undo_action) 
-        self.undo_button.grid(row=5,column=1,padx=10,pady=10)
+        self.undo_button.grid(row=4,column=1,padx=10,pady=10)
 
-
+        
     def _get_path(self):
         """
 
