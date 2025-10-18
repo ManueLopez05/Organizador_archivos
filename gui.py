@@ -28,7 +28,7 @@ class App:
         self.root.minsize(width=400, height=350)
         self.root.resizable(False,False)
         #Configurar el icono de la aplicación
-        icon = tk.PhotoImage(file=self.resource_path("icon.png"))
+        icon = tk.PhotoImage(file=self._resource_path("icon.png"))
         self.root.iconphoto(True, icon)
         #self.root.grid_anchor("center")
 
