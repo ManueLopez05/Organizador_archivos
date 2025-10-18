@@ -63,12 +63,15 @@ def organize_files_by_type(path,file_extentions_dictionary):
             final_file_path_list.append(directory+"/"+item)
             final_dir_path_set.add(directory)
 
-    print("Lista de rutas destino")
-    print(final_file_path_list)
-    print("Set de directorios creados")
-    print(final_dir_path_set)
+    # Para depuración
+    # print("Lista de rutas destino")
+    # print(final_file_path_list)
+    # print("Set de directorios creados")
+    # print(final_dir_path_set)
 
     return final_file_path_list, final_dir_path_set
+
+
 
 def _check_files_in_folderpath(path, file_extentions_dictionary):
 
@@ -112,8 +115,8 @@ def _check_files_in_folderpath(path, file_extentions_dictionary):
             elif not file_extension in file_extentions_dictionary: #and not file_extentions_dictionary["Otros"] in folders_set:
                 folders_set.add("Otros")
     #------------------------------------------Para depuración----------------------------------------------------------
-    print("------------------------------------En función _check_files_in_folderpath()------------------------")
-    print(f"Tamaño de set de carpetas: {len(folders_set)}")
+    # print("------------------------------------En función _check_files_in_folderpath()------------------------")
+    # print(f"Tamaño de set de carpetas: {len(folders_set)}")
 
     return folders_set
 
@@ -181,8 +184,9 @@ def _browse_files(path):
             print("\n",file_extension)
 
     # Para depuración
-    print("----------------------En función _browse_files()----------------------------------")
-    print(f"Tamaño de lista ruta de archivos: {len(file_path_list)}\nTamaño de lista nombres: {len(file_list)}\nTamaño de lista extenciones: {len(file_extensions_list)}")
+    # print("----------------------En función _browse_files()----------------------------------")
+    # print(f"Tamaño de lista ruta de archivos: {len(file_path_list)}\nTamaño de lista nombres: {len(file_list)}\nTamaño de lista extenciones: {len(file_extensions_list)}")
+
     return file_path_list, file_list, file_extensions_list
 
 
@@ -260,6 +264,8 @@ def organize_files_by_date(path):
 
     return final_file_path_list, final_dir_path_set
 
+
+
 def _check_date(file_path_list):
     """
     Revisa las fechas de todos los archivos para saber si solo abercan un mes, varios meses o varios años.
@@ -297,7 +303,6 @@ def _check_date(file_path_list):
     
 
 
-
 def undo_action(path, final_file_path_list, final_dir_path_set):
     """
     Deshace todas las acciones hechas, regresa todos los archivos a el directorio original y elimina los directorios creados
@@ -315,5 +320,4 @@ def undo_action(path, final_file_path_list, final_dir_path_set):
     
     for dir_path in final_dir_path_set:
         shutil.rmtree(dir_path)
-
 
