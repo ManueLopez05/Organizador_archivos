@@ -23,6 +23,10 @@ def organize_files_by_type(path,file_extentions_dictionary):
         _create_folders() [En este módulo] -- Crea las carpetas a dónde se moverán los archivos.
 
         _browse_files() [En este módulo] -- Genera una lista con los archivos en el directorio.
+    
+    Retunrs:
+        {list} -- Contiene las rutas finales de todos los archivos movidos.
+        {set} -- Contiene todas las rutas de los directorios padre creados.
         
     """
     #Se genera el set de nombres de carpetas
@@ -32,18 +36,39 @@ def organize_files_by_type(path,file_extentions_dictionary):
     #Se genera las listas de, rutas, extenciones y nombres de los archivos en el directorio
     file_path_list, file_list, file_extensions_list = _browse_files(path)
 
+    # Lista para guardar las rutas de destino de todos los archivos movidos
+    final_path_list = []
+
+    # Set para guardar la ruta de todos los directorios creados
+    final_dir_path_set = set()
+
     for file_extension, item_path, item in zip(file_extensions_list,file_path_list,file_list):
         #Se comprueba si está dentro del diccionario para moverse a la carpeta que corresponde
         if file_extension in file_extentions_dictionary:
-            shutil.move(item_path, os.path.join(path,file_extentions_dictionary[file_extension],item))
-            print(f"\nSe movió el archivo {item_path} a {os.path.join(path,file_extentions_dictionary[file_extension],item)}")
+            directory = os.path.join(path,file_extentions_dictionary[file_extension])
+            shutil.move(item_path,directory)
+            print(f"\nSe movió el archivo {item_path} a {directory}")
+
+            #Guardamos las rutas de destino
+            final_path_list.append(directory+"/"+item)
+            final_dir_path_set.add(directory)
 
         #Si no se encuentra en el diccionario, se mueve a la carpeta otros
         else:
-            shutil.move(item_path,os.path.join(path,file_extentions_dictionary["Otros"],item))
-            print(f"\nSe movió el archivo {item_path} a {os.path.join(path,file_extentions_dictionary['Otros'],item)}")
+            directory = os.path.join(path,file_extentions_dictionary["Otros"])
+            shutil.move(item_path, directory)
+            print(f"\nSe movió el archivo {item_path} a {directory}")
 
+            #Guardamos las rutas de destino
+            final_path_list.append(directory+"/"+item)
+            final_dir_path_set.add(directory)
 
+    print("Lista de rutas destino")
+    print(final_path_list)
+    print("Set de directorios creados")
+    print(final_dir_path_set)
+
+    return final_path_list, final_dir_path_set
 
 def _check_files_in_folderpath(path, file_extentions_dictionary):
 
@@ -169,13 +194,22 @@ def organize_files_by_date(path):
     Arguments:
         path {str} -- Contiene la ruta del directorio dónde se encuentran los archivos a ordenar.
 
+    Retunrs:
+        {list} -- Contiene las rutas finales de todos los archivos movidos.
+        {set} -- Contiene todas las rutas de los directorios padre creados.
     """
 
     file_path_list, file_list, file_extensions_list = _browse_files(path)
 
     months_years = _check_date(file_path_list)
 
-    for file_path in file_path_list:
+    # Lista para guardar las rutas de destino de todos los archivos movidos
+    final_file_path_list = []
+
+    # Set para guardar la ruta de todos los directorios creados
+    final_dir_path_set = set()
+
+    for file_path, file in zip(file_path_list,file_list):
         # Se obtien la fecha de modificación
         modified_time = os.path.getmtime(file_path)
 
@@ -188,11 +222,15 @@ def organize_files_by_date(path):
         # Se crea el nombre del directorio con el mes y día
         if months_years == "varios meses y anios":
             year = date.year
-            directory = os.path.join(path, f"{year}/{month}")
+            directory = os.path.join(path,str(year),month)
+            final_dir_path_set.add(os.path.dirname(directory))
+            
         elif months_years == "varios meses":
-            directory = os.path.join(path,f"{month}")
+            directory = os.path.join(path,month)
+            final_dir_path_set.add(directory)
         elif months_years == "basico":
             directory = os.path.join(path,f"{month} - {day}")
+            final_dir_path_set.add(directory)
 
         # Se crcrea el nombre del directorio con mes y subcarpetas con día
         #directory = os.path.join(path, f"{month}/{day}")
@@ -204,9 +242,23 @@ def organize_files_by_date(path):
         # Se mueve el archivo
         shutil.move(file_path, directory)
 
+        #Guardamos las rutas de destino
+        final_file_path_list.append(directory+"/"+file)
+        
+
+        
+
+
         # Para depuración
         print("-------------------------------------En función organize_files_by_date()----------------------------------")
         print(f"Se movió '{file_path}' a '{directory}'")
+    
+    print("Lista de rutas destino")
+    print(final_file_path_list)
+    print("Set de directorios creados")
+    print(final_dir_path_set)
+
+    return final_file_path_list, final_dir_path_set
 
 def _check_date(file_path_list):
     """
@@ -236,9 +288,32 @@ def _check_date(file_path_list):
         years.add(year)
         months.add(month)
     
-    if len(months) > 3:
+    if len(months) > 1:
         if len(years) > 1:
             return "varios meses y anios"
         return "varios meses"
     else:
         return "basico"
+    
+
+
+
+def undo_action(path, final_file_path_list, final_dir_path_set):
+    """
+    Deshace todas las acciones hechas, regresa todos los archivos a el directorio original y elimina los directorios creados
+
+    Parameters:
+        path {str} -- Contiene la ruta del directorio dónde se encuentran los archivos a ordenar.
+
+        final_file_path_list {list} -- Contiene las rutas finales de todos los archivos movidos.
+
+        final_dir_path_set {set} -- Contiene todas las rutas de los directorios padre creados.
+    """
+
+    for file_paht in final_file_path_list:
+        shutil.move(file_paht,path)
+    
+    for dir_path in final_dir_path_set:
+        shutil.rmtree(dir_path)
+
+
