@@ -37,7 +37,7 @@ def organize_files_by_type(path,file_extentions_dictionary):
     file_path_list, file_list, file_extensions_list = _browse_files(path)
 
     # Lista para guardar las rutas de destino de todos los archivos movidos
-    final_path_list = []
+    final_file_path_list = []
 
     # Set para guardar la ruta de todos los directorios creados
     final_dir_path_set = set()
@@ -50,7 +50,7 @@ def organize_files_by_type(path,file_extentions_dictionary):
             print(f"\nSe movió el archivo {item_path} a {directory}")
 
             #Guardamos las rutas de destino
-            final_path_list.append(directory+"/"+item)
+            final_file_path_list.append(directory+"/"+item)
             final_dir_path_set.add(directory)
 
         #Si no se encuentra en el diccionario, se mueve a la carpeta otros
@@ -60,15 +60,15 @@ def organize_files_by_type(path,file_extentions_dictionary):
             print(f"\nSe movió el archivo {item_path} a {directory}")
 
             #Guardamos las rutas de destino
-            final_path_list.append(directory+"/"+item)
+            final_file_path_list.append(directory+"/"+item)
             final_dir_path_set.add(directory)
 
     print("Lista de rutas destino")
-    print(final_path_list)
+    print(final_file_path_list)
     print("Set de directorios creados")
     print(final_dir_path_set)
 
-    return final_path_list, final_dir_path_set
+    return final_file_path_list, final_dir_path_set
 
 def _check_files_in_folderpath(path, file_extentions_dictionary):
 
