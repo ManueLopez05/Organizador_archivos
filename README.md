@@ -11,7 +11,7 @@
 Una pequeña interfaz gráfica en la que puedes seleccionar la ruta de la carpeta dónde están los archivos que se quieren ordenar y escoger como quieres hacer la organización, si por tipo de archivo o su fecha de modificación.
 
 <p align="center">
-  <img src="/assets/Por_tipo.png" alt="Ventana del programa">
+  <img src="/docs/images/Por_tipo.png" alt="Ventana del programa">
 </p>
 
 
@@ -19,7 +19,7 @@ Una pequeña interfaz gráfica en la que puedes seleccionar la ruta de la carpet
 En caso de ser necesario se pueden deshacer los cambios de la última acción.
 
 <p align="center">
-  <img src="/assets/Deshacer.gif" alt="Demo animado">
+  <img src="/docs/images/Deshacer.gif" alt="Demo animado">
 </p>
 
 
@@ -27,7 +27,7 @@ En caso de ser necesario se pueden deshacer los cambios de la última acción.
 Se crean carpetas en función de los tipos de archivos existentes, y se mueven los mismos a la que le corresponde, los tipos de archivos que no están contemplados simplemente se mueven a una carpeta llamada “Otros”.
 
 <p align="center">
-  <img src="/assets/Por_tipo_de_archivo.gif" alt="Demo animado">
+  <img src="/docs/images/Por_tipo_de_archivo.gif" alt="Demo animado">
 </p>
 
 ### Organizar archivos por fecha
@@ -37,7 +37,7 @@ Cuándo se usa esta opción hay tres comportamientos posibles dependiendo de las
 Si existen archivos distribuidos en diferentes años se crearan carpetas para cada año y dentro de estas, subcarpetas por cada mes.
 
 <p align="center">
-  <img src="/assets/Por_fecha_years.gif" alt="Demo animado">
+  <img src="/docs/images/Por_fecha_years.gif" alt="Demo animado">
 </p>
 
 
@@ -45,14 +45,14 @@ Si existen archivos distribuidos en diferentes años se crearan carpetas para ca
 Si se encuentran archivos de diferentes meses pero todos ellos de un mismo año se crean carpetas para cada mes.
 
 <p align="center">
-  <img src="/assets/Por_fecha_meses.gif" alt="Demo animado">
+  <img src="/docs/images/Por_fecha_meses.gif" alt="Demo animado">
 </p>
 
 #### Diferentes días
 Si se encuentran únicamente archivos pertenecientes a un mismo mes se crearan carpetas por cada día de dicho mes.
 
 <p align="center">
-  <img src="/assets/Por_dias.gif" alt="Demo animado">
+  <img src="/docs/images/Por_dias.gif" alt="Demo animado">
 </p>
 
 ## 📁 Tipos de archivos contemplados

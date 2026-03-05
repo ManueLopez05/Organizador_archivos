@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
-from file_organizer import organize_files_by_type, organize_files_by_date, undo_action
+from src.core.file_organizer import organize_files_by_type, organize_files_by_date, undo_action
 import webbrowser
 import sys
 import os
@@ -28,7 +28,7 @@ class App:
         self.root.minsize(width=400, height=350)
         self.root.resizable(False,False)
         #Configurar el icono de la aplicación
-        icon = tk.PhotoImage(file=self._resource_path("icon.png"))
+        icon = tk.PhotoImage(file=self._resource_path("assets/icon.png"))
         self.root.iconphoto(True, icon)
         #self.root.grid_anchor("center")
 

@@ -1,4 +1,4 @@
-import gui
+from src.gui import gui
 
 #Diccionario con las extenciones de archivo(key)  y carpeta que le corresponde (value)
 file_extentions = {
